@@ -6,17 +6,17 @@ declare @i int=1 ,@len int;
 	select @len=Count(*) from @var
 	while @i<=@len
 	begin 
-		if exists(select emp_id from employee where emp_id=(select id from @var where serial_num=@i))
-			begin 
-			update employee set employee.emp_name=(select name from @var where serial_num=@i),employee.salary=(select sal from @var where serial_num=@i)
-			where employee.emp_id=(select id from @var where serial_num=@i)
-			end
-		else 
-			begin insert into employee(emp_id,emp_name,salary) 
-			select id,name,sal from @var
+	if exists(select emp_id from employee where emp_id=(select id from @var where serial_num=@i))
+		begin 
+		update employee set employee.emp_name=(select name from @var where serial_num=@i),employee.salary=(select sal from @var where serial_num=@i)
+		where employee.emp_id=(select id from @var where serial_num=@i)
 		end
-		set @i=@i+1;
-	end
+	else 
+		begin insert into employee(emp_id,emp_name,salary) 
+		select id,name,sal from @var
+		end
+	set @i=@i+1;
+        end
 end
 create table employee(
 emp_id int,
